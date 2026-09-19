@@ -4,6 +4,7 @@
   "installCommand": "npm install && npm install --prefix web",
   "rewrites": [
     { "source": "/langchat/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "/langchat/dmb-web-solutions-logo.png", "destination": "/dmb-web-solutions-logo.png" },
     { "source": "/langchat", "destination": "/index.html" },
     { "source": "/langchat/", "destination": "/index.html" },
     { "source": "/langchat/(.*)", "destination": "/index.html" }
