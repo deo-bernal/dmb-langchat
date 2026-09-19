@@ -7,7 +7,7 @@ const ASSISTANT_ICON = `${import.meta.env.BASE_URL}images/icons/dmb-assistant.jp
 const WELCOME: SiteChatMessage = {
   role: "assistant",
   content:
-    "Hi. I am DMB Assistant (Robocop). Ask about AI automation, free portfolio pages, or how LangChat works. I run on free-tier Groq and Gemini.",
+    "Hi. I am DMB Assistant. Ask about AI automation, free portfolio pages, or how LangChat works. I run on free-tier Groq and Gemini.",
 };
 
 export default function RoboCopWidget() {
@@ -67,13 +67,13 @@ export default function RoboCopWidget() {
                 setShowHint(false);
               }}
             >
-              Agentic AI · Robocop
+              Agentic AI · Gemini + Groq
             </button>
           )}
           <button
             type="button"
             className="robocop-launcher"
-            aria-label="Open Agentic AI Robocop chat"
+            aria-label="Open DMB Assistant chat"
             onClick={() => {
               setIsOpen(true);
               setShowHint(false);
@@ -91,7 +91,7 @@ export default function RoboCopWidget() {
               <img src={ASSISTANT_ICON} alt="" width={44} height={44} />
               <div>
                 <strong>DMB Assistant</strong>
-                <span>{isLoading ? "Typing..." : "Agentic AI · Robocop"}</span>
+                <span>{isLoading ? "Typing..." : "Free-tier Gemini + Groq"}</span>
               </div>
             </div>
             <div className="robocop-header-actions">
