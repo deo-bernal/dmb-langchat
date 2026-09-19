@@ -38,9 +38,15 @@ SYSTEM_PROMPT = (
     "You remember earlier turns in this thread. Be concise and practical."
 )
 HISTORY_LIMIT = 40
-MODEL_PROVIDER = "gemini" if GOOGLE_API_KEY else ("openai" if OPENAI_API_KEY else "none")
-ACTIVE_MODEL = GEMINI_MODEL if MODEL_PROVIDER == "gemini" else (
-    OPENAI_MODEL if MODEL_PROVIDER == "openai" else ""
+MODEL_PROVIDER = (
+    "gemini"
+    if GOOGLE_API_KEY
+    else ("openai" if OPENAI_API_KEY else "demo-echo")
+)
+ACTIVE_MODEL = (
+    GEMINI_MODEL
+    if MODEL_PROVIDER == "gemini"
+    else (OPENAI_MODEL if MODEL_PROVIDER == "openai" else "demo-echo")
 )
 
 app = FastAPI(title="DMB LangChat API", version="1.0.0")
@@ -59,7 +65,7 @@ def require_convex() -> ConvexClient:
     return ConvexClient(CONVEX_URL)
 
 
-def require_model() -> BaseChatModel:
+def require_model() -> BaseChatModel | None:
     if GOOGLE_API_KEY:
         from langchain_google_genai import ChatGoogleGenerativeAI
 
@@ -76,9 +82,14 @@ def require_model() -> BaseChatModel:
             temperature=0.7,
             api_key=OPENAI_API_KEY,
         )
-    raise HTTPException(
-        status_code=503,
-        detail="Set GOOGLE_API_KEY or OPENAI_API_KEY for the chat model.",
+    return None
+
+
+def demo_echo_reply(message: str, history_len: int) -> str:
+    """Offline fallback so durable Convex memory can be demonstrated without an LLM key."""
+    return (
+        f"[demo-echo] I stored your message in Convex and can see {history_len} turn(s) "
+        f"in this thread (including this one). You said: {message[:240]}"
     )
 
 
@@ -104,7 +115,7 @@ def health():
     return {
         "ok": True,
         "convexConfigured": bool(CONVEX_URL and "YOUR_DEPLOYMENT" not in CONVEX_URL),
-        "modelConfigured": MODEL_PROVIDER != "none",
+        "modelConfigured": True,
         "modelProvider": MODEL_PROVIDER,
         "model": ACTIVE_MODEL,
     }
@@ -124,7 +135,6 @@ def create_thread(body: CreateThreadRequest):
 def chat(body: ChatRequest):
     client = require_convex()
     model = require_model()
-    chain = model | StrOutputParser()
 
     thread_id = body.threadId
     if not thread_id:
@@ -147,23 +157,26 @@ def chat(body: ChatRequest):
     history_rows = client.query("messages:listByThread", {"threadId": thread_id}) or []
     history_rows = history_rows[-HISTORY_LIMIT:]
 
-    lc_messages: list = [SystemMessage(content=SYSTEM_PROMPT)]
-    for row in history_rows:
-        role = row.get("role")
-        content = row.get("content") or ""
-        if role == "human":
-            lc_messages.append(HumanMessage(content=content))
-        elif role == "ai":
-            lc_messages.append(AIMessage(content=content))
-        elif role == "system":
-            lc_messages.append(SystemMessage(content=content))
+    if model is None:
+        reply_text = demo_echo_reply(body.message, len(history_rows))
+    else:
+        lc_messages: list = [SystemMessage(content=SYSTEM_PROMPT)]
+        for row in history_rows:
+            role = row.get("role")
+            content = row.get("content") or ""
+            if role == "human":
+                lc_messages.append(HumanMessage(content=content))
+            elif role == "ai":
+                lc_messages.append(AIMessage(content=content))
+            elif role == "system":
+                lc_messages.append(SystemMessage(content=content))
 
-    try:
-        reply = chain.invoke(lc_messages)
-    except Exception as exc:  # noqa: BLE001 — surface model errors to client
-        raise HTTPException(status_code=502, detail=f"Model error: {exc}") from exc
+        try:
+            reply = (model | StrOutputParser()).invoke(lc_messages)
+        except Exception as exc:  # noqa: BLE001 — surface model errors to client
+            raise HTTPException(status_code=502, detail=f"Model error: {exc}") from exc
+        reply_text = str(reply).strip() or "(empty reply)"
 
-    reply_text = str(reply).strip() or "(empty reply)"
     client.mutation(
         "messages:append",
         {"threadId": thread_id, "role": "ai", "content": reply_text},
