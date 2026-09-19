@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: dmb-langchat-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+    envVars:
+      - key: CONVEX_URL
+        sync: false
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.0-flash
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
+      - key: CORS_ORIGINS
+        sync: false

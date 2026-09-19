@@ -1,0 +1,218 @@
+:root {
+  --ink: #0f172a;
+  --slate: #334155;
+  --muted: #64748b;
+  --paper: #f8fafc;
+  --line: #e2e8f0;
+  --accent: #b91c1c;
+  --ok: #059669;
+  --panel: #ffffff;
+  --sidebar: #0b1220;
+  --sidebar-text: #e2e8f0;
+  font-family: "DM Sans", system-ui, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #fee2e2 0%, transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, #dbeafe 0%, transparent 50%),
+    linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+  min-height: 100%;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; min-height: 100%; }
+button, input, textarea { font: inherit; }
+
+.app {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  gap: 16px;
+}
+
+.sidebar {
+  background: var(--sidebar);
+  color: var(--sidebar-text);
+  border-radius: 18px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+}
+
+.brand {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+.brand span {
+  display: block;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 6px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+
+.btn:disabled { opacity: 0.55; cursor: wait; }
+.btn.ghost {
+  background: transparent;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+}
+
+.thread-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.thread-list button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: #cbd5e1;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.thread-list button.active,
+.thread-list button:hover {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.main {
+  background: var(--panel);
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 40px);
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.main header {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.main header h1 {
+  margin: 0;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+.main header p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.messages {
+  flex: 1;
+  overflow: auto;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.9), rgba(255, 255, 255, 0.4));
+}
+
+.bubble {
+  max-width: min(720px, 92%);
+  padding: 12px 14px;
+  border-radius: 14px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.bubble.human {
+  align-self: flex-end;
+  background: #0f172a;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.bubble.ai {
+  align-self: flex-start;
+  background: #f1f5f9;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-bottom-left-radius: 4px;
+}
+
+.composer {
+  display: flex;
+  gap: 10px;
+  padding: 16px;
+  border-top: 1px solid var(--line);
+  background: white;
+}
+
+.composer textarea {
+  flex: 1;
+  min-height: 52px;
+  max-height: 160px;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.empty {
+  margin: auto;
+  text-align: center;
+  color: var(--muted);
+  max-width: 360px;
+}
+
+.empty strong {
+  display: block;
+  color: var(--ink);
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.error {
+  color: var(--accent);
+  padding: 0 22px 10px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 860px) {
+  .app {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+  .sidebar { min-height: auto; }
+  .main { min-height: 70vh; }
+}
