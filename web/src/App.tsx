@@ -80,7 +80,7 @@ export default function App() {
           New chat
         </button>
         <ul className="thread-list">
-          {(threads ?? []).map((t) => (
+          {(threads ?? []).map((t: { _id: Id<"threads">; title: string }) => (
             <li key={t._id}>
               <button
                 type="button"
@@ -103,7 +103,7 @@ export default function App() {
 
       <main className="main">
         <header>
-          <h1>{threads?.find((t) => t._id === threadId)?.title || "Conversation"}</h1>
+          <h1>{threads?.find((t: { _id: Id<"threads">; title: string }) => t._id === threadId)?.title || "Conversation"}</h1>
           <p>
             Messages persist in Convex. Refresh the page — your thread is still here.
           </p>
@@ -116,7 +116,7 @@ export default function App() {
               Ask anything. History is stored permanently (unlike the lab RAM list).
             </div>
           )}
-          {(messages ?? []).map((m) => (
+          {(messages ?? []).map((m: { _id: string; role: string; content: string }) => (
             <div key={m._id} className={`bubble ${m.role === "human" ? "human" : "ai"}`}>
               {m.content}
             </div>
