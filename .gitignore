@@ -10,3 +10,6 @@ web/dist/
 **/.DS_Store
 *.pyc
 __pycache__/
+*.tsbuildinfo
+.vercel
+.env*
