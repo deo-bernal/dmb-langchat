@@ -360,6 +360,13 @@ button.ghost:hover { background: rgba(71, 85, 105, 0.45); }
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
   cursor: pointer;
 }
+.robocop-hint:hover,
+.robocop-hint:focus-visible {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+}
 .robocop-launcher {
   padding: 0;
   border: 0;
