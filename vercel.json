@@ -2,5 +2,10 @@
   "buildCommand": "cd web && npm run build",
   "outputDirectory": "web/dist",
   "installCommand": "npm install && npm install --prefix web",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/langchat/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "/langchat", "destination": "/index.html" },
+    { "source": "/langchat/", "destination": "/index.html" },
+    { "source": "/langchat/(.*)", "destination": "/index.html" }
+  ]
 }
