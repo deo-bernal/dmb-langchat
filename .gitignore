@@ -11,5 +11,6 @@ web/dist/
 *.pyc
 __pycache__/
 *.tsbuildinfo
-.vercel
-.env*
+!.env.example
+!api/.env.example
+!web/.env.example
