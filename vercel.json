@@ -5,6 +5,7 @@
   "rewrites": [
     { "source": "/langchat/assets/:path*", "destination": "/assets/:path*" },
     { "source": "/langchat/dmb-web-solutions-logo.png", "destination": "/dmb-web-solutions-logo.png" },
+    { "source": "/langchat/images/:path*", "destination": "/images/:path*" },
     { "source": "/langchat", "destination": "/index.html" },
     { "source": "/langchat/", "destination": "/index.html" },
     { "source": "/langchat/(.*)", "destination": "/index.html" }

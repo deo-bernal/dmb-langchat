@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import type { Id } from "../../convex/_generated/dataModel";
 import { getSessionId } from "./session";
+import RoboCopWidget from "./RoboCopWidget";
 
 const API_URL = (import.meta.env.VITE_API_URL as string) || "http://localhost:8080";
 const SITE = "https://www.dmbwebsolutions.com";
@@ -180,6 +181,8 @@ export default function App() {
         © {new Date().getFullYear()} DMB Web Solutions ·{" "}
         <a href={SITE}>dmbwebsolutions.com</a>
       </footer>
+
+      <RoboCopWidget />
     </div>
   );
 }
