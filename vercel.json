@@ -6,6 +6,10 @@
     { "source": "/langchat/assets/:path*", "destination": "/assets/:path*" },
     { "source": "/langchat/dmb-web-solutions-logo.png", "destination": "/dmb-web-solutions-logo.png" },
     { "source": "/langchat/images/:path*", "destination": "/images/:path*" },
+    {
+      "source": "/langchat/api/:path*",
+      "destination": "https://dmb-langchat-api-ko2m.onrender.com/:path*"
+    },
     { "source": "/langchat", "destination": "/index.html" },
     { "source": "/langchat/", "destination": "/index.html" },
     { "source": "/langchat/(.*)", "destination": "/index.html" }

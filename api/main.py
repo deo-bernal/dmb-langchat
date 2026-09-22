@@ -30,7 +30,10 @@ GEMINI_MODEL = (os.getenv("GEMINI_MODEL") or "gemini-2.0-flash").strip()
 OPENAI_MODEL = (os.getenv("OPENAI_MODEL") or "gpt-4o-mini").strip()
 CORS_ORIGINS = [
     o.strip()
-    for o in (os.getenv("CORS_ORIGINS") or "http://localhost:5173").split(",")
+    for o in (
+        os.getenv("CORS_ORIGINS")
+        or "http://localhost:5173,http://localhost:4173,https://www.dmbwebsolutions.com,https://dmbwebsolutions.com"
+    ).split(",")
     if o.strip()
 ]
 SYSTEM_PROMPT = (

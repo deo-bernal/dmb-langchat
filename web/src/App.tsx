@@ -5,7 +5,12 @@ import type { Id } from "../../convex/_generated/dataModel";
 import { getSessionId } from "./session";
 import RoboCopWidget from "./RoboCopWidget";
 
-const API_URL = (import.meta.env.VITE_API_URL as string) || "http://localhost:8080";
+const configuredApi = (import.meta.env.VITE_API_URL as string | undefined)?.trim() || "";
+// Production uses same-origin /langchat/api (Vercel rewrite → live Render host) to avoid CORS
+// and the suspended dmb-langchat-api.onrender.com hostname.
+const API_URL = import.meta.env.DEV
+  ? configuredApi || "http://localhost:8080"
+  : `${import.meta.env.BASE_URL}api`;
 const SITE = "https://www.dmbwebsolutions.com";
 const logoSrc = `${import.meta.env.BASE_URL}dmb-web-solutions-logo.png`;
 
